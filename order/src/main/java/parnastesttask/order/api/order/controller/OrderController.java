@@ -5,14 +5,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import parnastesttask.order.api.order.controller.dto.CreateOrderRequest;
-import parnastesttask.order.api.order.controller.dto.OrderResponse;
+import parnastesttask.order.api.order.controller.dto.OrderDetailResponse;
+import parnastesttask.order.api.order.controller.dto.OrderWithoutDetailResponse;
 import parnastesttask.order.api.order.controller.dto.UpdateStatusRequest;
 
 @RequiredArgsConstructor
@@ -28,57 +28,55 @@ public class OrderController {
     @ApiResponse(responseCode = "500", description = "неизвестная ошибка")
   })
   @PostMapping
-  public ResponseEntity<OrderResponse> create(
-      @Valid @RequestBody CreateOrderRequest createOrderRequest) {
-    // TODO
-    OrderResponse orderResponse = OrderResponse.builder().build();
+  public ResponseEntity<OrderDetailResponse> create(
+      @Valid @RequestBody CreateOrderRequest request) {
 
-    return ResponseEntity.status(201).body(orderResponse);
+    // TODO service call
+    return ResponseEntity.status(201).build();
   }
 
-  @Operation(summary = "список с фильтром status")
+  @Operation(summary = "список заказов с фильтром status + пагинация")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "список заказов"),
     @ApiResponse(responseCode = "400", description = "ошибка валидации"),
     @ApiResponse(responseCode = "500", description = "неизвестная ошибка")
   })
   @GetMapping
-  public ResponseEntity<List<OrderResponse>> get(
+  public ResponseEntity<List<OrderWithoutDetailResponse>> get(
       @RequestParam String status,
       @RequestParam int page,
       @RequestParam int size,
       @RequestParam String sort) {
-    // TODO
-    List<OrderResponse> orderResponses = new ArrayList<>();
 
-    return ResponseEntity.ok().body(orderResponses);
+    // TODO service call
+    return ResponseEntity.ok(List.of());
   }
 
   @Operation(summary = "заказ со всеми позициями")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "данные заказа со всеми позициями"),
-    @ApiResponse(responseCode = "404", description = "заказ с таким id не существует"),
+    @ApiResponse(responseCode = "200", description = "данные заказа"),
+    @ApiResponse(responseCode = "404", description = "заказ не найден"),
     @ApiResponse(responseCode = "500", description = "неизвестная ошибка")
   })
   @GetMapping("/{id}")
-  public ResponseEntity<OrderResponse> getById(@PathVariable UUID id) {
-    OrderResponse orderResponse = OrderResponse.builder().build();
+  public ResponseEntity<OrderDetailResponse> getById(@PathVariable UUID id) {
 
-    return ResponseEntity.ok(orderResponse);
+    // TODO service call
+    return ResponseEntity.ok().build();
   }
 
   @Operation(summary = "обновить статус заказа")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "данные пользователя получены"),
+    @ApiResponse(responseCode = "200", description = "статус обновлён"),
     @ApiResponse(responseCode = "400", description = "ошибка валидации"),
-    @ApiResponse(responseCode = "404", description = "заказ с таким id не существует"),
+    @ApiResponse(responseCode = "404", description = "заказ не найден"),
     @ApiResponse(responseCode = "500", description = "неизвестная ошибка")
   })
   @PutMapping("/{id}/status")
-  public ResponseEntity<OrderResponse> updateStatus(
-      @PathVariable UUID id, @Valid @RequestBody UpdateStatusRequest updateStatusRequest) {
-    OrderResponse orderResponse = OrderResponse.builder().build();
+  public ResponseEntity<OrderDetailResponse> updateStatus(
+      @PathVariable UUID id, @Valid @RequestBody UpdateStatusRequest request) {
 
-    return ResponseEntity.ok(orderResponse);
+    // TODO service call
+    return ResponseEntity.ok().build();
   }
 }
