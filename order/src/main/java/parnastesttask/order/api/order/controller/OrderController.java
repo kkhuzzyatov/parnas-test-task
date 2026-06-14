@@ -14,12 +14,18 @@ import parnastesttask.order.api.order.controller.dto.CreateOrderRequest;
 import parnastesttask.order.api.order.controller.dto.OrderDetailResponse;
 import parnastesttask.order.api.order.controller.dto.OrderWithoutDetailResponse;
 import parnastesttask.order.api.order.controller.dto.UpdateStatusRequest;
+import parnastesttask.order.api.order.mapper.OrderMapper;
+import parnastesttask.order.api.order.model.Order;
+import parnastesttask.order.api.order.service.OrderService;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/orders")
 @RestController
 @Tag(name = "order")
 public class OrderController {
+
+  private final OrderService orderService;
+  private final OrderMapper orderMapper;
 
   @Operation(summary = "создать заказ")
   @ApiResponses({
@@ -31,8 +37,9 @@ public class OrderController {
   public ResponseEntity<OrderDetailResponse> create(
       @Valid @RequestBody CreateOrderRequest request) {
 
-    // TODO service call
-    return ResponseEntity.status(201).build();
+    Order created = orderService.create(orderMapper.toEntity(request));
+
+    return ResponseEntity.status(201).body(orderMapper.toDetailResponse(created));
   }
 
   @Operation(summary = "список заказов с фильтром status + пагинация")
@@ -48,8 +55,11 @@ public class OrderController {
       @RequestParam int size,
       @RequestParam String sort) {
 
-    // TODO service call
-    return ResponseEntity.ok(List.of());
+    Order.Status orderStatus = Order.Status.valueOf(status);
+
+    List<Order> orders = orderService.getByStatus(orderStatus, page, size);
+
+    return ResponseEntity.ok(orders.stream().map(orderMapper::toListResponse).toList());
   }
 
   @Operation(summary = "заказ со всеми позициями")
@@ -61,8 +71,9 @@ public class OrderController {
   @GetMapping("/{id}")
   public ResponseEntity<OrderDetailResponse> getById(@PathVariable UUID id) {
 
-    // TODO service call
-    return ResponseEntity.ok().build();
+    Order order = orderService.getWithItemsById(id);
+
+    return ResponseEntity.ok(orderMapper.toDetailResponse(order));
   }
 
   @Operation(summary = "обновить статус заказа")
@@ -76,7 +87,10 @@ public class OrderController {
   public ResponseEntity<OrderDetailResponse> updateStatus(
       @PathVariable UUID id, @Valid @RequestBody UpdateStatusRequest request) {
 
-    // TODO service call
-    return ResponseEntity.ok().build();
+    Order.Status status = Order.Status.valueOf(request.status());
+
+    Order updated = orderService.updateStatus(id, status);
+
+    return ResponseEntity.ok(orderMapper.toDetailResponse(updated));
   }
 }
