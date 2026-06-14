@@ -32,6 +32,7 @@ public class Order {
   @Column(nullable = false)
   private Status status;
 
+  @Builder.Default
   @OneToMany(
       fetch = FetchType.LAZY,
       mappedBy = "order",
