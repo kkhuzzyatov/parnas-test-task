@@ -1,6 +1,7 @@
 package parnastesttask.order.api.order.mapper;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 import parnastesttask.order.api.order.controller.dto.CreateOrderItemRequest;
 import parnastesttask.order.api.order.controller.dto.CreateOrderRequest;
@@ -14,10 +15,13 @@ import parnastesttask.order.api.order.model.OrderItem;
 public class OrderMapper {
 
   public Order toEntity(CreateOrderRequest request) {
+
     Order order =
         Order.builder().customerName(request.customerName()).status(Order.Status.CREATED).build();
 
-    request.items().stream().map(this::toEntity).forEach(order::addItem);
+    Optional.ofNullable(request.items()).orElse(List.of()).stream()
+        .map(this::toEntity)
+        .forEach(order::addItem);
 
     return order;
   }
@@ -40,6 +44,9 @@ public class OrderMapper {
   }
 
   public List<OrderWithoutDetailResponse> toListResponse(List<Order> orders) {
+    if (orders == null || orders.isEmpty()) {
+      return List.of();
+    }
     return orders.stream().map(this::toListResponse).toList();
   }
 
@@ -63,6 +70,10 @@ public class OrderMapper {
   }
 
   public List<OrderItemResponse> toItemResponses(List<OrderItem> items) {
+    if (items == null || items.isEmpty()) {
+      return List.of();
+    }
+
     return items.stream().map(this::toItemResponse).toList();
   }
 }
