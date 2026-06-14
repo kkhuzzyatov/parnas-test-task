@@ -9,4 +9,6 @@ import lombok.Builder;
 
 @Builder
 public record CreateOrderItemRequest(
-    @NotBlank String productName, @NotNull @Min(1) Integer quantity, @DecimalMin("0.01") BigDecimal price) {}
+    @NotBlank String productName,
+    @NotNull @Min(1) Integer quantity,
+    @DecimalMin("0.01") BigDecimal price) {}

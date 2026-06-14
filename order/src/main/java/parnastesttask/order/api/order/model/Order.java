@@ -37,10 +37,10 @@ public class Order {
   private Status status;
 
   @OneToMany(
-          fetch = FetchType.LAZY,
-          mappedBy = "order",
-          cascade = CascadeType.ALL,
-          orphanRemoval = true)
+      fetch = FetchType.LAZY,
+      mappedBy = "order",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   @Builder.Default
   @Setter(AccessLevel.NONE)
   private List<OrderItem> items = new ArrayList<>();

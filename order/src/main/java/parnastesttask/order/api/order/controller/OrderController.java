@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -77,8 +76,7 @@ public class OrderController {
   })
   @PutMapping("/{id}/status")
   public ResponseEntity<OrderResponse> updateStatus(
-      @PathVariable UUID id,
-      @Valid @RequestBody UpdateStatusRequest updateStatusRequest) {
+      @PathVariable UUID id, @Valid @RequestBody UpdateStatusRequest updateStatusRequest) {
     OrderResponse orderResponse = OrderResponse.builder().build();
 
     return ResponseEntity.ok(orderResponse);
