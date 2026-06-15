@@ -20,13 +20,15 @@ public class Order {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "order_id")
   private UUID id;
 
   @Column(name = "customer_name", nullable = false)
   private String customerName;
 
+  @Builder.Default
   @Column(name = "order_date", nullable = false)
-  private LocalDateTime orderDate;
+  private LocalDateTime orderDate = LocalDateTime.now();
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
