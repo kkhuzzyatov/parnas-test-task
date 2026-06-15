@@ -18,3 +18,9 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:/migrations/master.xml
+
+app:
+  rabbitmq:
+    exchange: order.exchange
+    queue: order.created
+    routing-key: order.created
