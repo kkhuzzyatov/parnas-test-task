@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import parnastesttask.order.api.order.model.Order;
 import parnastesttask.order.api.order.repository.OrderRepository;
+import parnastesttask.order.messaging.OrderEventProducer;
 
 @RequiredArgsConstructor
 @Service
@@ -18,9 +19,12 @@ import parnastesttask.order.api.order.repository.OrderRepository;
 public class OrderService {
 
   private final OrderRepository orderRepository;
+  private final OrderEventProducer orderEventProducer;
 
   public Order create(Order order) {
-    return orderRepository.save(order);
+    Order saved = orderRepository.save(order);
+    orderEventProducer.sendOrderCreatedEvent(saved);
+    return saved;
   }
 
   @Transactional(readOnly = true)

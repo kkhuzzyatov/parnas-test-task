@@ -17,11 +17,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import parnastesttask.order.api.order.model.Order;
 import parnastesttask.order.api.order.repository.OrderRepository;
+import parnastesttask.order.messaging.OrderEventProducer;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
   @Mock private OrderRepository orderRepository;
+
+  @Mock private OrderEventProducer orderEventProducer;
 
   @InjectMocks private OrderService orderService;
 
@@ -35,6 +38,7 @@ class OrderServiceTest {
 
     assertEquals(order, result);
     verify(orderRepository).save(order);
+    verify(orderEventProducer).sendOrderCreatedEvent(order);
   }
 
   @Test
