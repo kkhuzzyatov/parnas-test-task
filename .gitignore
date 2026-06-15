@@ -57,3 +57,4 @@ build/
 
 ### bash utils
 *.sh
+!build.sh
