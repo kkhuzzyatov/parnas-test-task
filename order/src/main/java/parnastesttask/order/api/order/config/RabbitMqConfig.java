@@ -36,10 +36,7 @@ public class RabbitMqConfig {
 
   @Bean
   public Binding orderCreatedBinding() {
-    return BindingBuilder
-            .bind(orderCreatedQueue())
-            .to(orderExchange())
-            .with(routingKey);
+    return BindingBuilder.bind(orderCreatedQueue()).to(orderExchange()).with(routingKey);
   }
 
   @Bean
@@ -49,9 +46,7 @@ public class RabbitMqConfig {
 
   @Bean
   public RabbitTemplate rabbitTemplate(
-          ConnectionFactory connectionFactory,
-          MessageConverter messageConverter
-  ) {
+      ConnectionFactory connectionFactory, MessageConverter messageConverter) {
     RabbitTemplate template = new RabbitTemplate(connectionFactory);
     template.setMessageConverter(messageConverter);
     return template;
